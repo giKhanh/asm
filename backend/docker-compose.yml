@@ -1,0 +1,59 @@
+version: '3.8' 
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
+    container_name: surveysg-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: surveysg
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - surveysg-network
+
+  # Mongo Express - Web UI cho MongoDB
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: surveysg-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+    depends_on:
+      - mongo
+    networks:
+      - surveysg-network
+
+  # Backend API
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: surveysg-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/surveysg
+    depends_on:
+      - mongo
+    networks:
+      - surveysg-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  mongo_data:
+
+networks:
+  surveysg-network:
+    driver: bridge 
