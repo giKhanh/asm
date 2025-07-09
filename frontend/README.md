@@ -140,7 +140,6 @@ npm run build
 3. Deploy using any static hosting service (Netlify, Vercel, etc.)
 
 ## 📋 Requirements
-
 - Node.js 16+
 - npm 8+
 - Modern web browser
