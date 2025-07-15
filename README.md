@@ -116,6 +116,22 @@ assignment/
 - **Home Page** (`/`) - Dashboard/welcome page
 - **Profile Page** (`/profile`) - User profile management
 
+## 📸 Real Results
+
+Here's what the application looks like in action:
+
+### Login Page
+
+![Login Page](assets/loginpage.png)
+
+### Home Page  
+
+![Home Page](assets/homepage.png)
+
+### Profile Page
+
+![Profile Page](assets/profilepage.png)
+
 ## 🧪 Testing
 
 ### Backend Testing
