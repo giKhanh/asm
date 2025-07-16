@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
-// Custom hook để sử dụng AuthContext dễ dàng
+// custom hook to use AuthContext easily
+
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
