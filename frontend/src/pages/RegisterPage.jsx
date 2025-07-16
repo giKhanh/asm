@@ -20,10 +20,10 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Lấy thông tin GOVAA từ state (được pass từ LoginPage)
+        // get govaaUser from state (passed from LoginPage)
     const govaaUser = location.state?.govaaUser;
 
-    // State cho form
+    // form data
     const [formData, setFormData] = useState({
         govaaName: govaaUser?.name || '',
         govaaEmail: govaaUser?.email || '',
@@ -41,7 +41,7 @@ const RegisterPage = () => {
 
     const { saveUser } = useAuth();
 
-    // Lấy danh sách agencies khi component mount
+    // fetch agencies when component mount
     useEffect(() => {
         const fetchAgencies = async () => {
             try {
@@ -65,7 +65,7 @@ const RegisterPage = () => {
         fetchAgencies();
     }, []);
 
-    // Redirect về login nếu không có thông tin GOVAA
+    // redirect to login page if no govaaUser
     useEffect(() => {
         if (!govaaUser) {
             navigate(ROUTES.LOGIN, {
@@ -74,7 +74,8 @@ const RegisterPage = () => {
         }
     }, [govaaUser, navigate]); 
 
-    // Hàm cập nhật form data
+ 
+    // update form data when user input
     const handleInputChange = (field) => (event) => {
         const value = field === 'acceptedTerms' ? event.target.checked : event.target.value;
         setFormData(prev => ({
@@ -118,7 +119,7 @@ const RegisterPage = () => {
                 saveUser(response.data.user);
                 setSuccess('Registration successful! Redirecting...');
 
-                // Chuyển về trang chủ sau 2 giây
+                // redirect back to home page after 2 seconds
                 setTimeout(() => {
                     navigate(ROUTES.HOME);
                 }, 2000);

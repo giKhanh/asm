@@ -3,29 +3,29 @@ import { createContext, useState, useEffect } from 'react';
 import { getToken, removeToken } from '../services/api';
 import { STORAGE_KEYS } from '../constants';
 
-// Tạo Context cho Authentication
+// create context for authentication
 export const AuthContext = createContext();
 
-// AuthProvider component để bọc quanh app
+// AuthProvider component to wrap around app
 export const AuthProvider = ({ children }) => {
-    // State để lưu thông tin user và trạng thái loading
+    // state to store user data and loading state
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Hàm để lưu user sau khi login/register
+    // function to save user after login/register
     const saveUser = (userData) => {
         setUser(userData);
-        // Lưu vào localStorage luôn
+        // save to localStorage
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
     };
 
-    // Hàm để logout user
+    // function to logout user
     const logout = () => {
         setUser(null);
-        removeToken(); // Xóa token và user data
+        removeToken(); // remove token and user data
     };
 
-    // Kiểm tra xem user đã login chưa khi app khởi động
+    // check if user is logged in when app starts
     useEffect(() => {
         const checkUserLogin = () => {
             try {
@@ -33,12 +33,12 @@ export const AuthProvider = ({ children }) => {
                 const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
 
                 if (token && savedUser) {
-                    // Có token và user data -> user đã login
+                    // if token and user data -> user is logged in
                     setUser(JSON.parse(savedUser));
                 }
             } catch (error) {
                 console.log('Error checking login:', error);
-                // Nếu có lỗi thì clear data
+                // if error -> clear data
                 logout();
             } finally {
                 setLoading(false);
@@ -48,13 +48,13 @@ export const AuthProvider = ({ children }) => {
         checkUserLogin();
     }, []);
 
-    // Các value sẽ được share cho toàn app
+    // all values will be shared to the whole app
     const value = {
-        user,           // Thông tin user hiện tại
-        loading,        // Có đang loading không
-        saveUser,       // Hàm để lưu user
-        logout,         // Hàm để logout
-        isLoggedIn: !!user  // Boolean check user đã login chưa
+        user,           // current user data
+        loading,        // loading state
+        saveUser,       // function to save user
+        logout,         // function to logout
+        isLoggedIn: !!user  // boolean check if user is logged in
     };
 
     return (

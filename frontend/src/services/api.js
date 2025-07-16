@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL, STORAGE_KEYS } from '../constants';
 
-// Tạo axios instance để dùng chung
+// Create shared axios instance
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -9,23 +9,23 @@ const api = axios.create({
     }
 });
 
-// Hàm để lấy token từ localStorage
+// Function to get token from localStorage
 const getToken = () => {
     return localStorage.getItem(STORAGE_KEYS.TOKEN);
 };
 
-// Hàm để lưu token vào localStorage
+// Function to save token to localStorage
 const saveToken = (token) => {
     localStorage.setItem(STORAGE_KEYS.TOKEN, token);
 };
 
-// Hàm để xóa token khỏi localStorage
+// Function to remove token from localStorage
 const removeToken = () => {
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     localStorage.removeItem(STORAGE_KEYS.USER);
 };
 
-// Thêm token vào header tự động nếu có
+// Automatically add token to header if available
 api.interceptors.request.use((config) => {
     const token = getToken();
     if (token) {
@@ -36,7 +36,7 @@ api.interceptors.request.use((config) => {
 
 // === AUTH API ===
 
-// Kiểm tra server có chạy không
+// Check if server is running
 export const checkHealth = async() => {
     const response = await api.get('/health');
     return response.data;
@@ -46,7 +46,7 @@ export const checkHealth = async() => {
 export const govaaAuth = async(email, password) => {
     const response = await api.post('/api/auth/govaa', { email, password });
 
-    // Nếu response có token (user đã có tài khoản) thì lưu lại
+    // If response has token (user already has account) then save it
     if (response.data.success && response.data.token) {
         saveToken(response.data.token);
         if (response.data.data && response.data.data.user) {
@@ -57,11 +57,11 @@ export const govaaAuth = async(email, password) => {
     return response.data;
 };
 
-// Đăng ký user mới
+// Register new user
 export const registerUser = async(userData) => {
     const response = await api.post('/api/auth/register', userData);
 
-    // Tự động lưu token nếu đăng ký thành công
+    // Automatically save token if registration successful
     if (response.data.success && response.data.token) {
         saveToken(response.data.token);
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.data.user));
@@ -70,11 +70,11 @@ export const registerUser = async(userData) => {
     return response.data;
 };
 
-// Đăng nhập
+// Login
 export const loginUser = async(email, password) => {
     const response = await api.post('/api/auth/login', { email, password });
 
-    // Tự động lưu token nếu login thành công
+    // Automatically save token if login successful
     if (response.data.success && response.data.token) {
         saveToken(response.data.token);
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.data.user));
@@ -83,17 +83,17 @@ export const loginUser = async(email, password) => {
     return response.data;
 };
 
-// Đăng xuất
+// Logout
 export const logoutUser = async() => {
     try {
         await api.post('/api/auth/logout');
     } finally {
-        // Dù có lỗi hay không thì vẫn xóa token
+        // Remove token regardless of errors
         removeToken();
     }
 };
 
-// Kiểm tra trạng thái đăng nhập
+// Check authentication status
 export const checkAuthStatus = async() => {
     const response = await api.get('/api/auth/status');
     return response.data;
@@ -101,17 +101,17 @@ export const checkAuthStatus = async() => {
 
 // === USER API ===
 
-// Lấy danh sách agencies
+// Get list of agencies
 export const getAgencies = async() => {
     const response = await api.get('/api/user/agencies');
     return response.data;
 };
 
-// Lấy profile user
+// Get user profile
 export const getUserProfile = async() => {
     const response = await api.get('/api/user/profile');
     return response.data;
 };
 
-// Export các hàm helper
+// Export helper functions
 export { getToken, saveToken, removeToken };

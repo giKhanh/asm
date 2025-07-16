@@ -23,7 +23,7 @@ const HomePage = () => {
 
             <Paper elevation={2} sx={{ p: 4, textAlign: 'center' }}>
                 {isLoggedIn ? (
-                    // User đã login
+                    // user is logged in
                     <Box>
                         <Typography variant="h5" mb={2}>
                             Hello, {user?.name}!
@@ -40,7 +40,7 @@ const HomePage = () => {
                         </Button>
                     </Box>
                 ) : (
-                    // User chưa login
+                    // user is not logged in
                     <Box>
                         <Typography variant="h5" mb={2}>
                             Singapore Government Survey System
@@ -61,7 +61,7 @@ const HomePage = () => {
                 )}
             </Paper>
 
-            {/* Thông tin thêm */}
+            {/* additional information */}
             <Box mt={4}>
                 <Typography variant="h6" mb={2}>
                     About SurveySG

@@ -17,7 +17,7 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    // Lấy thông tin profile từ server khi component mount
+    // fetch profile data when component mount
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -52,7 +52,7 @@ const ProfilePage = () => {
         );
     }
 
-    // Sử dụng profileData từ server, fallback về user từ context
+            // use profileData from server, fallback to user from context
     const userData = profileData || user;
 
     return (

@@ -11,7 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import { ROUTES } from './constants';
 
-// Tạo theme MUI đơn giản
+// create simple MUI theme
 const theme = createTheme({
   palette: {
     primary: {
@@ -23,36 +23,36 @@ const theme = createTheme({
   },
 });
 
-// Component để protect routes (chỉ cho user đã login vào)
+// component to protect routes (only allow logged in users)
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useAuth();
   
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a nicer spinner
+    return <div>Loading...</div>; // TODO: replace this with a nicer spinner
   }
   
   return isLoggedIn ? children : <Navigate to={ROUTES.LOGIN} />;
 };
 
-// Component chính của app
+// main component of app
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline /> {/* Reset CSS cho MUI */}
+      <CssBaseline /> {/* reset MUI CSS */}
       <AuthProvider>
         <Router>
           <Layout>
             <Routes>
-              {/* Trang chủ */}
+              {/* home page */}
               <Route path={ROUTES.HOME} element={<HomePage />} />
               
-              {/* Trang login */}
+              {/* login page */}
               <Route path={ROUTES.LOGIN} element={<LoginPage />} />
               
-              {/* Trang đăng ký */}
+              {/* register page */}
               <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
               
-              {/* Protected routes (cần login) */}
+              {/* protected routes (need login) */}
               <Route 
                 path={ROUTES.PROFILE} 
                 element={
@@ -62,7 +62,7 @@ function App() {
                 } 
               />
               
-              {/* Fallback route (page not found) */}
+              {/* fallback route (page not found) */}
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
           </Layout>

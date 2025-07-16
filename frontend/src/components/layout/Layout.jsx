@@ -8,15 +8,15 @@ const Layout = ({ children }) => {
   const { user, logout, isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  // Hàm xử lý logout
+  // function to handle logout
   const handleLogout = async () => {
     try {
       await logoutUser();
-      logout(); // Clear state trong context
+      logout(); // clear state in context
       alert('Logged out successfully!');
     } catch (error) {
-      console.log('Lỗi logout:', error);
-      // Vẫn logout ở client dù server có lỗi
+      console.log('Error logout:', error);
+        // still logout at client even if server has error
       logout();
     }
   };
